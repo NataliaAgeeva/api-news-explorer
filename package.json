@@ -1,0 +1,32 @@
+{
+  "name": "api-news-explorer",
+  "version": "1.0.0",
+  "description": "backend for news explorer",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NataliaAgeeva/api-news-explorer.git"
+  },
+  "keywords": [],
+  "author": "Ageeva Natalia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NataliaAgeeva/api-news-explorer/issues"
+  },
+  "homepage": "https://github.com/NataliaAgeeva/api-news-explorer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.27",
+    "validator": "^13.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "nodemon": "^2.0.4"
+  }
+}
