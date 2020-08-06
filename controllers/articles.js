@@ -1,4 +1,5 @@
 const Article = require('../models/article');
+const { NotFoundError } = require('../errors/errors');
 
 module.exports.getArticles = (req, res, next) => {
   Article.find({ owner: req.user._id })
