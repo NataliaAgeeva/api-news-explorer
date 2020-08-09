@@ -3,10 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
+const helmet = require('helmet');
+const limiter = require('./middlewares/rateLimiter');
 const routes = require('./routes');
 const { login, signUp } = require('./controllers/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
+const rateLimit = require('express-rate-limit');
 
 const { PORT, dbURL } = process.env;
 
@@ -21,6 +24,10 @@ mongoose.connect(dbURL, {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(helmet);
+
+app.use(limiter);
 
 app.use(requestLogger);
 
