@@ -5,14 +5,26 @@ const articleSchema = new mongoose.Schema({
   keyword: {
     type: String,
     required: true,
+    validate: {
+      validator: (value) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Invalid keyword',
+    },
   },
   title: {
     type: String,
     required: true,
+    validate: {
+      validator: (value) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Invalid title',
+    },
   },
   text: {
     type: String,
     required: true,
+    validate: {
+      validator: (value) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Invalid text',
+    },
   },
   date: {
     type: Date,
@@ -21,6 +33,10 @@ const articleSchema = new mongoose.Schema({
   source: {
     type: String,
     required: true,
+    validate: {
+      validator: (value) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Invalid source',
+    },
   },
   link: {
     type: String,
