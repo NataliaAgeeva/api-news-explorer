@@ -1,10 +1,10 @@
 const Article = require('../models/article');
-const { NotFoundError } = require('../errors/errors');
+const { NotFoundError, ForbiddenError } = require('../errors/errors');
 
 module.exports.getArticles = (req, res, next) => {
   Article.find({ owner: req.user._id })
     .then((article) => res.json({ data: article }))
-    .catch((err) => next(err.message));
+    .catch(next);
 };
 
 module.exports.postArticle = (req, res, next) => {
@@ -16,14 +16,18 @@ module.exports.postArticle = (req, res, next) => {
     keyword, title, text, date, source, link, image, owner: req.user._id,
   })
     .then((card) => res.status(201).json({ data: card }))
-    .catch((err) => err.message);
+    .catch(next);
 };
 
 module.exports.deleteArticle = (req, res, next) => {
-  Article.findOneAndDelete({ _id: req.params.articleId, owner: req.user._id })
-    .orFail(() => new Error('Article not found'))
-    .then(() => {
-      res.json('Article has been deleted');
+  Article.findByIdAndRemove(req.params.articleId).select('+owner')
+    .orFail(() => new NotFoundError('Article not found'))
+    .then((article) => {
+      if (article.owner.equals(req.user._id)) {
+        res.json('Article has been deleted');
+      } else {
+        next(new ForbiddenError('Action forbidden'));
+      }
     })
-    .catch((err) => err.message);
+    .catch(next);
 };

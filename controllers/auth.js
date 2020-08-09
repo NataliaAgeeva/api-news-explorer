@@ -1,25 +1,29 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const {
-  ServerError, ValidationError,
-} = require('../errors/errors');
-const { AuthorizationError } = require('../errors/errors');
+const { ValidationError, AuthorizationError } = require('../errors/errors');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
+  const WEEK = 3600000 * 24 * 7;
+
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' });
-      res.send({ token });
+      res.cookie('jwt', token, {
+        maxAge: WEEK,
+        httpOnly: true,
+        sameSite: true,
+      })
+        .send({ token })
+        .end();
     })
     .catch((err) => {
-      const error = new AuthorizationError(err.message);
-      next(error);
+      next(new AuthorizationError(err.message));
     });
 };
 
@@ -41,7 +45,7 @@ module.exports.signUp = (req, res, next) => {
         if (err.name === 'ValidationError') {
           next(new ValidationError(err.message));
         } else {
-          next(new ServerError(err.message));
+          next(err.message);
         }
       });
   }
