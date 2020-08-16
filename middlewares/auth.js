@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
   if (!authorization || !authorization.startsWith('Bearer ')) {
     return next(new AuthorizationError('Authorization required'));
   }
-  const token = authorization.replace('Bearer ', '');
+  const token = req.cookies.jwt || authorization.replace('Bearer ', '');
   let payload;
   try {
     payload = jwt.verify(token, JWT_SECRET);
