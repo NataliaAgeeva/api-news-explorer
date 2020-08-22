@@ -9,25 +9,28 @@ module.exports.getArticles = (req, res, next) => {
 
 module.exports.postArticle = (req, res, next) => {
   const {
-    keyword, title, text, date, source, link, image,
+    keyword, title, text, source, link, image,
   } = req.body;
 
   Article.create({
-    keyword, title, text, date, source, link, image, owner: req.user._id,
+    keyword, title, text, source, link, image, owner: req.user._id,
   })
     .then((card) => res.status(201).json({ data: card }))
     .catch(next);
 };
 
 module.exports.deleteArticle = (req, res, next) => {
-  Article.findByIdAndRemove(req.params.articleId).select('+owner')
+  Article.findById(req.params.articleId).select('+owner')
     .orFail(() => new NotFoundError('Article not found'))
     .then((article) => {
       if (article.owner.equals(req.user._id)) {
-        res.json('Article has been deleted');
-      } else {
-        next(new ForbiddenError('Action forbidden'));
+        return Article.deleteOne(article)
+          .then(() => {
+            res.json({ message: 'Article has been deleted' });
+          })
+          .catch(next);
       }
+      return next(new ForbiddenError('Action forbidden'));
     })
     .catch(next);
 };

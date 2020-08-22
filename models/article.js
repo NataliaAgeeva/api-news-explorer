@@ -26,17 +26,9 @@ const articleSchema = new mongoose.Schema({
       message: 'Invalid text',
     },
   },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
   source: {
     type: String,
     required: true,
-    validate: {
-      validator: (value) => !validator.isEmpty(value, { ignore_whitespace: true }),
-      message: 'Invalid source',
-    },
   },
   link: {
     type: String,
@@ -59,6 +51,10 @@ const articleSchema = new mongoose.Schema({
     ref: 'user',
     required: true,
     select: false,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
   },
 });
 

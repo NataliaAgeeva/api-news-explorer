@@ -20,8 +20,8 @@ module.exports.login = (req, res, next) => {
         .send({ token })
         .end();
     })
-    .catch((err) => {
-      next(new AuthorizationError(err.message));
+    .catch(() => {
+      next(new AuthorizationError('Authorization error'));
     });
 };
 
@@ -41,9 +41,9 @@ module.exports.signUp = (req, res, next) => {
       }))
       .catch((err) => {
         if (err.name === 'ValidationError') {
-          next(new ValidationError(err.message));
+          next(new ValidationError('Invalid input'));
         } else {
-          next(err.message);
+          next(err);
         }
       });
   }
