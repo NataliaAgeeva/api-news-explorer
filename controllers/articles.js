@@ -9,11 +9,11 @@ module.exports.getArticles = (req, res, next) => {
 
 module.exports.postArticle = (req, res, next) => {
   const {
-    keyword, title, text, source, link, image,
+    keyword, title, text, source, link, image, date,
   } = req.body;
 
   Article.create({
-    keyword, title, text, source, link, image, owner: req.user._id,
+    keyword, title, text, source, link, image, date, owner: req.user._id,
   })
     .then((card) => res.status(201).json({ data: card }))
     .catch(next);

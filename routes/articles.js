@@ -24,7 +24,7 @@ router.post('/', celebrate({
       }
       throw new ValidationError('Invalid image URL');
     }),
-    date: Joi.string(),
+    date: Joi.string().required(),
   }),
 }), postArticle);
 router.delete('/:articleId', celebrate({
