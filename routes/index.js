@@ -3,11 +3,18 @@ const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const { NotFoundError } = require('../errors/errors');
 const limiter = require('../middlewares/rateLimiter');
 const { login, signUp } = require('../controllers/auth');
 const { requestLogger, errorLogger } = require('../middlewares/logger');
 const auth = require('../middlewares/auth');
+
+const corsOptions = {
+  origin: ['http://localhost:8080', 'http://localhost:8080/articles', 'http://localhost:8080/users/me', 'https://explorenews.fun', 'www.explorenews.fun'],
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
 
 routes.use(bodyParser.json());
 routes.use(bodyParser.urlencoded({ extended: true }));
@@ -15,6 +22,8 @@ routes.use(bodyParser.urlencoded({ extended: true }));
 routes.use(helmet());
 routes.use(cookieParser());
 routes.use(limiter);
+
+routes.use(cors(corsOptions));
 
 routes.use(requestLogger);
 
