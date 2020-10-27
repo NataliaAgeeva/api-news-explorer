@@ -11,8 +11,7 @@ const { requestLogger, errorLogger } = require('../middlewares/logger');
 const auth = require('../middlewares/auth');
 
 const corsOptions = {
-  origin: ['http://localhost:8080', 'https://nataliaageeva.github.io', 'http://api.explorenews.fun', 'http://explorenews.fun'],
-  optionsSuccessStatus: 200,
+  origin: ['http://localhost:8080', 'https://nataliaageeva.github.io', 'https://api.explorenews.fun', 'https://explorenews.fun'],
   credentials: true,
 };
 
