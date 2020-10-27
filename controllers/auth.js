@@ -16,6 +16,7 @@ module.exports.login = (req, res, next) => {
         maxAge: WEEK,
         httpOnly: true,
         sameSite: 'lax',
+        secure: true,
       })
         .send({ token })
         .end();
