@@ -11,7 +11,7 @@ const { requestLogger, errorLogger } = require('../middlewares/logger');
 const auth = require('../middlewares/auth');
 
 const corsOptions = {
-  origin: ['http://localhost:8080', 'http://localhost:8080/articles', 'http://localhost:8080/users/me', 'http://api.explorenews.fun', 'www.api.explorenews.fun'],
+  origin: ['http://localhost:8080', 'https://nataliaageeva.github.io', 'http://api.explorenews.fun', 'http://explorenews.fun'],
   optionsSuccessStatus: 200,
   credentials: true,
 };
@@ -20,10 +20,9 @@ routes.use(bodyParser.json());
 routes.use(bodyParser.urlencoded({ extended: true }));
 
 routes.use(helmet());
+routes.use(cors(corsOptions));
 routes.use(cookieParser());
 routes.use(limiter);
-
-routes.use(cors(corsOptions));
 
 routes.use(requestLogger);
 
